@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>WXT 浏览器插件开发教程</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="keywords" content="WXT,浏览器插件,Chrome扩展,Firefox扩展,React,TypeScript" />
+  <meta name="description" content="WXT 浏览器插件开发完整教程，从入门到实战" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0" />
+
+  <!-- theme -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css" title="vue" />
+  
+  <style type="text/css">
+    /* 自定义侧边栏样式 - Apollo 风格 */
+    .sidebar-nav > ul > li.file p > a {
+      font-size: 15px;
+      font-weight: 700;
+      color: #364149;
+    }
+
+    .sidebar-nav .folder {
+      cursor: pointer;
+    }
+
+    /* 封面页样式优化 */
+    .cover {
+      background: linear-gradient(to left bottom, hsl(211, 100%, 85%) 0%, hsl(169, 100%, 85%) 100%) !important;
+    }
+
+    .cover .cover-main {
+      max-width: 800px;
+    }
+
+    .cover h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #2c3e50;
+    }
+
+    .cover p {
+      color: #34495e;
+    }
+
+    .cover a.anchor {
+      color: #42b983 !important;
+    }
+
+    /* 代码块样式 */
+    .markdown-section code {
+      border-radius: 4px;
+      font-family: 'Source Code Pro', Monaco, Menlo, Consolas, monospace;
+    }
+
+    /* 表格样式优化 */
+    .markdown-section table {
+      display: table;
+      width: 100%;
+    }
+
+    .markdown-section table th {
+      background-color: #f8f8f8;
+      font-weight: 600;
+    }
+
+    /* 侧边栏分组标题 */
+    .sidebar-nav ul > li > p {
+      font-weight: 700;
+      color: #364149;
+      margin: 15px 0 5px 0;
+    }
+
+    /* 导航栏样式 */
+    .app-nav {
+      position: fixed;
+      margin: 0;
+      padding: 10px 50px 10px 0;
+    }
+
+    .app-nav li {
+      display: inline-block;
+      margin: 0 10px;
+    }
+
+    /* 搜索框样式 */
+    .search {
+      margin-bottom: 20px;
+      padding: 6px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .search input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+
+    .search input:focus {
+      border-color: #42b983;
+      outline: none;
+    }
+
+    /* 分页插件样式 */
+    .docsify-pagination-container {
+      border-top: 1px solid rgba(0, 0, 0, 0.07);
+      margin-top: 80px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">加载中...</div>
+  
+  <script>
+    window.$docsify = {
+      // 基本配置
+      name: 'WXT 教程',
+      repo: 'https://github.com/nicepkg/wxt-examples',
+      
+      // 加载配置
+      loadSidebar: true,
+      loadNavbar: true,
+      coverpage: true,
+      onlyCover: true,
+      
+      // 导航配置
+      auto2top: true,
+      maxLevel: 4,
+      subMaxLevel: 3,
+      mergeNavbar: true,
+      
+      // 路由别名
+      alias: {
+        '/_sidebar.md': '/_sidebar.md',
+        '/_navbar.md': '/_navbar.md',
+        '/.*/_sidebar.md': '/_sidebar.md',
+        '/.*/_navbar.md': '/_navbar.md',
+      },
+      
+      // 搜索配置
+      search: {
+        placeholder: '搜索文档',
+        noData: '没有找到相关结果',
+        paths: 'auto',
+        depth: 6,
+        maxAge: 86400000,
+      },
+      
+      // 代码复制按钮
+      copyCode: {
+        buttonText: '复制',
+        errorText: '复制失败',
+        successText: '已复制',
+      },
+      
+      // 分页配置
+      pagination: {
+        previousText: '上一章',
+        nextText: '下一章',
+        crossChapter: true,
+        crossChapterText: true,
+      },
+      
+      // 选项卡配置
+      tabs: {
+        persist: true,
+        sync: true,
+        theme: 'classic',
+        tabComments: true,
+        tabHeadings: true,
+      },
+      
+      // 字数统计
+      count: {
+        countable: true,
+        fontsize: '0.9em',
+        color: 'rgb(90,90,90)',
+        language: 'chinese',
+      },
+      
+      // 插件
+      plugins: [
+        // 编辑文档按钮
+        function (hook, vm) {
+          hook.beforeEach(function (html) {
+            var url = 'https://github.com/your-repo/wxt-tutorial/blob/main/docs/' + vm.route.file;
+            var editHtml = '[:memo: 编辑文档](' + url + ')\n\n';
+            
+            return editHtml
+              + html
+              + '\n\n----\n\n'
+              + '<a href="https://docsify.js.org" target="_blank" style="color: inherit; font-weight: normal; text-decoration: none;">Powered by docsify</a>';
+          });
+        },
+        // 页脚信息
+        function (hook) {
+          var footer = [
+            '<hr/>',
+            '<footer style="text-align: center; padding: 20px; color: #999; font-size: 14px;">',
+            '<span>WXT 浏览器插件开发教程 &copy; 2025</span>',
+            '</footer>'
+          ].join('');
+          
+          hook.afterEach(function (html) {
+            return html + footer;
+          });
+        }
+      ],
+    };
+  </script>
+
+  <!-- docsify 核心 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/docsify.min.js"></script>
+
+  <!-- docsify 插件 -->
+  <!-- 搜索 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/search.min.js"></script>
+  <!-- 侧边栏折叠 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-sidebar-collapse@1/dist/docsify-sidebar-collapse.min.js"></script>
+  <!-- 图片缩放 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify@4/lib/plugins/zoom-image.min.js"></script>
+  <!-- 代码复制 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-copy-code@2/dist/docsify-copy-code.min.js"></script>
+  <!-- 分页导航 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-pagination@2/dist/docsify-pagination.min.js"></script>
+  <!-- 字数统计 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-count@1/dist/countable.min.js"></script>
+  <!-- 选项卡 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-tabs@1/dist/docsify-tabs.min.js"></script>
+
+  <!-- 代码高亮 -->
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-typescript.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-jsx.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-tsx.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-yaml.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-css.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-sql.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-markdown.min.js"></script>
+
+  <!-- Mermaid 图表支持 -->
+  <script src="//cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.min.js"></script>
+  <script>
+    var num = 0;
+    mermaid.initialize({ startOnLoad: false });
+    
+    window.$docsify.markdown = {
+      renderer: {
+        code: function(code, lang) {
+          if (lang === "mermaid") {
+            return '<div class="mermaid">' + mermaid.render('mermaid-svg-' + num++, code) + "</div>";
+          }
+          return this.origin.code.apply(this, arguments);
+        }
+      }
+    };
+  </script>
+
+</body>
+</html>
