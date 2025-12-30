@@ -118,7 +118,7 @@
     window.$docsify = {
       // 基本配置
       name: 'WXT 教程',
-      repo: 'https://github.com/nicepkg/wxt-examples',
+      repo: 'https://github.com/LighthouseInTheSea/wxt-course',
       
       // 加载配置
       loadSidebar: true,
@@ -186,7 +186,7 @@
         // 编辑文档按钮
         function (hook, vm) {
           hook.beforeEach(function (html) {
-            var url = 'https://github.com/your-repo/wxt-tutorial/blob/main/docs/' + vm.route.file;
+            var url = 'https://github.com/LighthouseInTheSea/wxt-course/blob/main/' + vm.route.file;
             var editHtml = '[:memo: 编辑文档](' + url + ')\n\n';
             
             return editHtml

@@ -1,6 +1,6 @@
 <!-- _coverpage.md -->
 
-![logo](https://wxt.dev/logo-light.svg ':size=120')
+![logo](https://wxt.dev/hero-logo.svg ':size=120')
 
 # WXT 浏览器插件开发教程
 
